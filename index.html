@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recetario Web</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 30px;
+      color: #1a2a4f;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin: 0;
+    }
+
+    header p {
+      color: #555;
+      margin: 5px 0 0;
+    }
+
+    h2 {
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 8px;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    #recetas {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .receta {
+      display: flex;
+      gap: 20px;
+      background: #fff;
+      border: 1px solid #dde3ee;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .receta img {
+      width: 180px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .receta h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .receta p {
+      margin: 6px 0;
+      font-size: 14px;
+      background: #eef1f6;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Recetario Web</h1>
+    <p>Descubre dos deliciosas recetas para preparar en casa.</p>
+  </header>
+
+  <h2>Nuestras recetas</h2>
+  <section id="recetas"></section>
+
+  <script>
+    const URL_API = "https://dummyjson.com/recipes?limit=1";
+    const contenedor = document.getElementById("recetas");
+
+    fetch(URL_API)
+      .then(respuesta => respuesta.json())
+      .then(datos => {
+        datos.recipes.forEach(receta => {
+          const tarjeta = document.createElement("article");
+          tarjeta.classList.add("receta");
+
+          tarjeta.innerHTML = `
+            <img src="${receta.image}" alt="${receta.name}">
+            <div>
+              <h3>${receta.name}</h3>
+              <p><strong>Tipo de cocina:</strong> ${receta.cuisine}</p>
+              <p><strong>Dificultad:</strong> ${receta.difficulty}</p>
+              <p><strong>Preparación:</strong> ${receta.prepTimeMinutes} minutos</p>
+              <p><strong>Primer paso:</strong> ${receta.instructions[0]}</p>
+            </div>
+          `;
+
+          contenedor.appendChild(tarjeta);
+        });
+      })
+      .catch(error => {
+        contenedor.innerHTML = "<p>Error al cargar las recetas.</p>";
+        console.error(error);
+      });
+  </script>
+
+</body>
+</html>
